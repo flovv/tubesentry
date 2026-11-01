@@ -1,0 +1,68 @@
+# TubeSentry — Complete Machine-Readable API & MCP Specification
+
+## 1. Overview & System Purpose
+TubeSentry is an agentic-first, local-first Python library, CLI tool, and Model Context Protocol (MCP) server engineered for media buyers, PPC performance directors, and marketing agencies. It identifies and quantizes media spend wasted on non-performing or brand-unsafe YouTube channels across Google Ads (Search, Display, Video, and Performance Max) and Google Display & Video 360 (DV360).
+
+## 2. Waste Taxonomy & Scoring Rules
+
+### 2.1. MADE_FOR_KIDS (Rule 1)
+- Trigger: YouTube API status.madeForKids == True (Confidence = 1.0) OR topicCategories matching Children's Music/Cartoons alongside toddler keywords (Confidence = 0.92).
+- Risk: Complete loss of buying power, severe COPPA & GDPR-K legal and regulatory compliance exposure.
+
+### 2.2. PASSIVE_AUDIO_MUSIC (Rule 2)
+- Trigger: Freebase topic /m/04rlf (Music) or VEVO/-Topic channel title suffix matching passive background keywords (Confidence = 0.90):
+  lofi, chillhop, sleep music, rain sounds, white noise, study beats, ambient music, meditation, 432 hz, 528 hz, 8 hours, 10 hours, karaoke, cafe jazz.
+- Risk: Zero screen visibility; media plays in background browser tabs or phones with screens turned off.
+
+### 2.3. LOW_AGE_GAMING (Rule 3)
+- Trigger: Gaming topic /m/0bzvm2 matching underage mobile gaming franchises (Confidence = 0.85):
+  Roblox, Brookhaven, Blox Fruits, Minecraft, Brawl Stars, Gacha Life, Skibidi Toilet, FNF, Subway Surfers, Stumble Guys, Toca Life, Geometry Dash.
+- Risk: Accidental minor clicks caused by children repeatedly tapping mobile screens to skip ads.
+
+### 2.4. FOREIGN_SCRIPT_LEAK (Rule 4)
+- Trigger: Audio language mismatch with campaign target languages (Confidence = 0.88) OR non-Latin script ratio >= 0.25 in channel title across Cyrillic, Arabic, Hindi, Bengali, Thai, Hangul, or CJK scripts (Confidence = 0.95).
+- Risk: Ad budget spent outside the geographical and linguistic target market.
+
+### 2.5. AI_SLOP_CLICK_FARM (Rule 5)
+- Trigger: Video count > 1500 with upload velocity > 3.5 videos/day, conversions == 0, and CTR > 4.5% OR faceless AI content lexicon with 0 conversions (Confidence = 0.82):
+  Reddit stories, AITA stories, AI facts, satisfying slime, hydraulic press shorts, Family Guy clips.
+- Risk: Bot click drain and algorithmic click-farm arbitrage.
+
+### 2.6. PERFORMANCE_SINKHOLE (Rule 6)
+- Trigger: Channel spend >= 3.0 * Target CPA with 0 conversions and view-through rate (VTR) < 0.15 (Confidence = 0.80).
+- Risk: Empirical budget bleed on non-converting placements.
+
+## 3. Exclusion List Limits & Constraints
+- Google Ads Account-Level Placement Exclusion List: Hard cap of 65,000 placements per list.
+- Google Ads Campaign-Level Placement Exclusion List: Hard cap of 10,000 placements.
+- Google Ads Editor Import Schema: CSV with columns `Placement` and `Type` where `Placement` contains `youtube.com/channel/UC...` and `Type` is `YouTube channel`.
+- DV360 Bulk Channel Blocklist: CSV files chunked into 10,000 rows.
+
+## 4. MCP Tool Schemas
+
+### Tool: `audit_placement_report`
+Parameters:
+- `csv_path` (string, required): Absolute or relative path to Google Ads / DV360 CSV report.
+- `target_languages` (array of strings, default: ["de", "en"]): Campaign geotargeted language ISO codes.
+- `target_cpa` (number, optional): Target cost per acquisition to detect performance sinkholes.
+- `api_key` (string, optional): TubeSentry Pro Polar.sh license key (TS_PRO_...).
+- `output_dir` (string, optional): Directory to save 65k exclusion CSV and HTML report.
+
+Returns:
+- `AuditSummaryReport` JSON object containing `total_spend`, `total_wasted_spend`, `category_breakdowns`, `top_offenders`, and file export paths.
+
+### Tool: `inspect_youtube_channels`
+Parameters:
+- `channel_ids_or_urls` (array of strings, required): List of YouTube channel URLs or 24-char UC IDs.
+- `target_languages` (array of strings, default: ["de", "en"]).
+- `api_key` (string, optional).
+
+Returns:
+- Array of scored channel records with categories, confidence scores, and reason summaries.
+
+### Tool: `activate_tubesentry_pro`
+Parameters:
+- `api_key` (string, required): Polar.sh license key.
+
+Returns:
+- Status object confirming validation and wheel installation.

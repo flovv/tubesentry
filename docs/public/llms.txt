@@ -1,0 +1,54 @@
+# TubeSentry — YouTube Placement Waste Auditor & MCP Server
+
+> TubeSentry audits Google Ads ("Where ads showed") and DV360 YouTube placement reports to detect and eliminate wasted ad spend on Made-for-Kids toddler channels, 24/7 background music streams, underage gaming, foreign-script geo-leakage, and AI slop click-farms.
+
+## Core Capabilities
+- **Multi-Language Header Ingestion:** Auto-detects English, German, Spanish, French, Italian, and Dutch Google Ads and DV360 placement CSV exports, stripping metadata title lines and summary footers.
+- **6-Vector Deterministic Waste Taxonomy:**
+  1. `MADE_FOR_KIDS`: Official COPPA flag or toddler/nursery rhyme lexicon (CoComelon, Baby Shark, Peppa Pig).
+  2. `PASSIVE_AUDIO_MUSIC`: Lofi beats, 8h sleep music, rain sounds, VEVO/-Topic streams with zero visual screen attention.
+  3. `LOW_AGE_GAMING`: Roblox, Minecraft, Brawl Stars, Skibidi, Gacha Life accidental child taps.
+  4. `FOREIGN_SCRIPT_LEAK`: Audio language mismatch or non-Latin script leakage (Cyrillic, Hindi, Arabic, Asian scripts).
+  5. `AI_SLOP_CLICK_FARM`: High upload velocity, faceless TTS Reddit stories, high CTR with 0 conversions.
+  6. `PERFORMANCE_SINKHOLE`: Spend >= 3x target CPA with 0 conversions and VTR < 15%.
+- **Free Diagnostic Hook:** Reports exact total wasted spend across all 6 risk categories and unmasks the Top 25 worst offending channels. Remaining channels are masked (`UC••••••••••••`) until Pro activation.
+- **65,000-Channel Google Ads Exclusion Shield:** Quantizes reactive and proactive high-risk channels into exact 1-click Google Ads Editor (`Placement,Type`) and DV360 bulk blocklists.
+- **White-Label HTML Pitch Deck:** Generates interactive client and CFO audit presentations with Chart.js charts and custom agency branding.
+
+## FastMCP Server Configuration (Claude Desktop, Claude Code, Cursor)
+```json
+{
+  "mcpServers": {
+    "tubesentry": {
+      "command": "uvx",
+      "args": ["--from", "tubesentry", "tubesentry-mcp"]
+    }
+  }
+}
+```
+
+## CLI Usage
+```bash
+# Demo run with 25,000 synthetic placements
+tubesentry demo --out-dir ./demo_youtube
+
+# Audit placement report
+tubesentry audit where_ads_showed.csv --lang de,en --cpa 45.0
+
+# Start MCP stdio server
+tubesentry mcp
+
+# Activate Pro license
+tubesentry auth --key TS_PRO_...
+```
+
+## Python API
+```python
+import tubesentry as ts
+
+report = ts.audit_placements("where_ads_showed.csv", target_languages=["de", "en"], target_cpa=40.0)
+print(f"Total Wasted Spend: €{report.total_wasted_spend:,.2f} ({report.wasted_spend_percentage:.1f}%)")
+```
+
+Full details and MCP tool schemas: https://tubesentry.dev/llms-full.txt
+License: MIT (Public Core) / Commercial Proprietary (TubeSentry Pro via Polar.sh)
