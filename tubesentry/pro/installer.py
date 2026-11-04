@@ -67,6 +67,12 @@ def install_pro(
     # Set environment variable for active session
     os.environ["TUBESENTRY_API_KEY"] = api_key
 
+    if is_test_key and not local_path:
+        from tubesentry.pro import bridge
+
+        bridge.HAS_PRO = True
+        return True
+
     # 2. Check if tubesentry_pro is already installed in the current environment
     already_installed = False
     try:

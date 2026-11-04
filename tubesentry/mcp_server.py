@@ -4,13 +4,17 @@ import os
 from pathlib import Path
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.fastmcp import FastMCP
+except ModuleNotFoundError:
+    from mcp.server.mcpserver import MCPServer as FastMCP  # type: ignore[import-not-found,no-redef]
 
 import tubesentry
 from tubesentry.contracts.exceptions import ProLicenseError
 from tubesentry.core.heuristics import evaluate_heuristics
 from tubesentry.core.seed_db import lookup_seed_channel
 from tubesentry.io.ingestor import extract_youtube_identifiers
+from tubesentry.pro import bridge
 from tubesentry.pro.bridge import is_pro_available
 from tubesentry.pro.installer import install_pro
 
@@ -48,7 +52,7 @@ def audit_placement_report(
     out_html = None
 
     effective_key = api_key or os.getenv("TUBESENTRY_API_KEY")
-    if output_dir and (is_pro_available() and effective_key):
+    if output_dir and (is_pro_available() and bridge.tubesentry_pro is not None and effective_key):
         out_p = Path(output_dir)
         out_p.mkdir(parents=True, exist_ok=True)
         out_exclusions = str(out_p / "google_ads_reactive_exclusions.csv")

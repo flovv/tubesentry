@@ -9,6 +9,7 @@ import pandas as pd
 from tubesentry.contracts.schemas import AuditSummaryReport
 from tubesentry.core.auditor import run_free_audit
 from tubesentry.io.ingestor import load_placement_report
+from tubesentry.pro import bridge
 from tubesentry.pro.bridge import dispatch_pro_audit, is_pro_available
 from tubesentry.pro.installer import install_pro
 
@@ -44,7 +45,7 @@ def audit_placements(
     effective_key = api_key or os.getenv("TUBESENTRY_API_KEY")
 
     # If Pro is available and a license key is provided (or Pro exports requested)
-    if is_pro_available() and effective_key:
+    if is_pro_available() and bridge.tubesentry_pro is not None and effective_key:
         return dispatch_pro_audit(
             df=df,
             target_languages=langs,

@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from tubesentry.cli import app
+from tubesentry.pro import bridge
 
 runner = CliRunner()
 
@@ -40,7 +42,9 @@ youtube.com/channel/UCbCmjCuTUZos6Inko4u57UQ,Cocomelon,100.00,5000,1000,20,0.0
     assert "Audited Placements" in result.output
 
 
-def test_cli_auth_test_key() -> None:
+def test_cli_auth_test_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(bridge, "HAS_PRO", bridge.HAS_PRO)
+    monkeypatch.delenv("TUBESENTRY_API_KEY", raising=False)
     result = runner.invoke(app, ["auth", "--key", "TS_TEST_DEV_KEY"])
     assert result.exit_code == 0
     assert "License validated successfully" in result.output

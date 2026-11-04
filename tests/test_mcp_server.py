@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from tubesentry.mcp_server import (
     activate_tubesentry_pro,
     audit_placement_report,
     inspect_youtube_channels,
 )
+from tubesentry.pro import bridge
 
 
 def test_inspect_youtube_channels() -> None:
@@ -47,7 +50,9 @@ youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow,Lofi Girl,200.00,8000,1500,30,0.0
     assert len(result["top_offenders"]) == 2
 
 
-def test_activate_tubesentry_pro_mock() -> None:
+def test_activate_tubesentry_pro_mock(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(bridge, "HAS_PRO", bridge.HAS_PRO)
+    monkeypatch.delenv("TUBESENTRY_API_KEY", raising=False)
     # Use dev/test key pattern
     res = activate_tubesentry_pro(api_key="TS_TEST_AGENCY_SECRET_KEY")
     assert res["status"] == "success"
