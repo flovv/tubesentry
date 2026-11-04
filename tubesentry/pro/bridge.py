@@ -10,7 +10,7 @@ from tubesentry.contracts.schemas import AuditSummaryReport
 
 # Attempt dynamic import of compiled tubesentry_pro package
 try:
-    import tubesentry_pro
+    import tubesentry_pro  # type: ignore[import-not-found,import-untyped]
     HAS_PRO = True
 except ImportError:
     tubesentry_pro = None  # type: ignore[assignment]

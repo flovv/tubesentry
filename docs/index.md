@@ -36,3 +36,5 @@ features:
     title: 100% Local-First & Private
     details: Client budgets, impressions, and placement CSVs never leave your local environment. Zero cloud data leaks.
 ---
+
+<!-- TubeSentry Documentation -->

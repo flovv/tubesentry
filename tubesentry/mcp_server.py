@@ -82,7 +82,7 @@ def profile_creative_intent(
     recommended YouTube contextual topic entities, and negative anti-persona exclusions.
     """
     try:
-        from tubesentry_pro.creative_profiler import profile_ad_creative
+        from tubesentry_pro.creative_profiler import profile_ad_creative  # type: ignore[import-not-found,import-untyped]
 
         profile = profile_ad_creative(
             ad_url=ad_url,
