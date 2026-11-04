@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -46,7 +47,8 @@ def audit_placement_report(
     out_65k = None
     out_html = None
 
-    if output_dir:
+    effective_key = api_key or os.getenv("TUBESENTRY_API_KEY")
+    if output_dir and (is_pro_available() and effective_key):
         out_p = Path(output_dir)
         out_p.mkdir(parents=True, exist_ok=True)
         out_exclusions = str(out_p / "google_ads_reactive_exclusions.csv")

@@ -94,6 +94,9 @@ def install_pro(
 
         if not installed:
             if is_test_key:
+                from tubesentry.pro import bridge
+
+                bridge.HAS_PRO = True
                 return True
             effective_index = index_url or WHEEL_INDEX_URL
             cmd = [
