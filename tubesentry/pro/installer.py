@@ -93,6 +93,8 @@ def install_pro(
                     break
 
         if not installed:
+            if is_test_key:
+                return True
             effective_index = index_url or WHEEL_INDEX_URL
             cmd = [
                 sys.executable,
