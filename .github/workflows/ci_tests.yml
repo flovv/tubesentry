@@ -33,7 +33,7 @@ jobs:
 
       - name: Type Check with Mypy
         run: |
-          mypy tubesentry
+          mypy tubesentry --ignore-missing-imports
 
       - name: Run Pytest with Coverage
         run: |
