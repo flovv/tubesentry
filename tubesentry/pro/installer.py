@@ -52,7 +52,7 @@ def install_pro(
             if resp.status_code != 200:
                 raise ProLicenseError(
                     f"Invalid or revoked TubeSentry Pro license key (HTTP {resp.status_code}). "
-                    "Obtain a key at https://tubesentry.dev"
+                    "Obtain a key at https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX"
                 )
             data = resp.json()
             if data.get("status") != "granted":

@@ -13,6 +13,9 @@ hero:
       text: Creative Targeting Fit
       link: /guide/creative-profiler
     - theme: alt
+      text: Get Pro License
+      link: https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX
+    - theme: alt
       text: View on GitHub
       link: https://github.com/flovv/tubesentry
 

@@ -329,7 +329,7 @@ def _build_diagnostic_banner(
             "",
             f" [*] Unlock All {total_waste_channels:,} Flagged Channels, 65k Google Ads Exclusion CSV & HTML Deck:",
             "    >>> tubesentry auth --key TS_PRO_...",
-            "    Get an instant Single Audit Pass (€199) or Agency License: https://tubesentry.dev",
+            "    Get an instant Single Audit Pass (€199) or Agency License: https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX",
             "=" * 84,
         ]
     )

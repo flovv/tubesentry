@@ -26,9 +26,11 @@ Compiles a standalone, single-file interactive presentation deck containing:
 
 ## Licensing & Activation
 
-Visit [tubesentry.dev](https://tubesentry.dev) to obtain a license:
+Obtain an instant license key directly via [Polar Checkout](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX):
 * **Single Audit Pass:** €199 (unmasks all channels for a single campaign).
 * **Agency Monthly:** €499/mo (unlimited unmasked audits, white-label decks, and automated exclusion shields).
+
+[![Buy TubeSentry Pro on Polar](https://img.shields.io/badge/Polar.sh-Buy%20TubeSentry%20Pro-0062FF?style=for-the-badge&logo=polar&logoColor=white)](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX)
 
 ```bash
 tubesentry auth --key TS_PRO_YOUR_POLAR_KEY

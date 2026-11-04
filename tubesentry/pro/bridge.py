@@ -51,14 +51,14 @@ def dispatch_pro_audit(
             "    >>> ts.install_pro(api_key='TS_PRO_...')\n"
             "Or run CLI:\n"
             "    $ tubesentry auth --key TS_PRO_...\n"
-            "Obtain a key at https://tubesentry.dev"
+            "Obtain a key at https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX"
         )
 
     effective_key = api_key or os.getenv("TUBESENTRY_API_KEY", "")
     if not effective_key:
         raise ProLicenseError(
             "🔒 TubeSentry Pro license key required. Pass `api_key='TS_PRO_...'` or set TUBESENTRY_API_KEY.\n"
-            "Obtain a key at https://tubesentry.dev"
+            "Obtain a key at https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX"
         )
 
     return tubesentry_pro.audit_placements_pro(

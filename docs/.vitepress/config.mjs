@@ -17,6 +17,7 @@ export default defineConfig({
       { text: 'MCP Server', link: '/guide/mcp-server' },
       { text: 'CLI Reference', link: '/guide/cli' },
       { text: 'TubeSentry Pro', link: '/guide/pro' },
+      { text: 'Buy Pro ↗', link: 'https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX' },
       { text: 'GitHub', link: 'https://github.com/flovv/tubesentry' }
     ],
     sidebar: [

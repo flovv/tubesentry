@@ -166,7 +166,9 @@ Add to `.cursor/mcp.json`:
 
 ## 🔑 Activating TubeSentry Pro
 
-Obtain an instant Single Audit Pass (€199) or Agency Unlimited Key at [tubesentry.dev](https://tubesentry.dev):
+Obtain an instant Single Audit Pass (€199) or Agency Unlimited Key via [Polar Checkout](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX):
+
+[![Buy TubeSentry Pro on Polar](https://img.shields.io/badge/Polar.sh-Buy%20TubeSentry%20Pro-0062FF?style=for-the-badge&logo=polar&logoColor=white)](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX)
 
 ```bash
 tubesentry auth --key TS_PRO_YOUR_POLAR_KEY
