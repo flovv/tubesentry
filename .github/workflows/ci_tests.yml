@@ -38,4 +38,4 @@ jobs:
 
       - name: Run Pytest with Coverage
         run: |
-          pytest --cov=tubesentry --cov-report=term-missing tests/
+          pytest -v --tb=short --cov=tubesentry --cov-report=term-missing tests/
