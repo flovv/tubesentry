@@ -54,6 +54,7 @@ def test_bridge_pro_not_installed_error(monkeypatch: pytest.MonkeyPatch) -> None
 
 def test_bridge_pro_missing_key_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(bridge, "HAS_PRO", True)
+    monkeypatch.setattr(bridge, "tubesentry_pro", object())
     monkeypatch.delenv("TUBESENTRY_API_KEY", raising=False)
 
     df = pd.DataFrame([{"cost": 10.0, "impressions": 100, "raw_placement": "test"}])
