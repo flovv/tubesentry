@@ -78,6 +78,46 @@ tubesentry audit where_ads_showed.csv \
   --ad-text "B2B infrastructure platform for DevOps and cloud architects"
 ```
 
+### 4. Export Google Ads JavaScript Automation
+
+Generate a copy-paste Google Ads Script snippet that automatically creates or populates an account-level Shared Placement Exclusion List:
+
+```bash
+tubesentry audit where_ads_showed.csv --export-script cleanup_placements.js
+```
+
+Paste into Google Ads (*Tools & Settings > Bulk Actions > Scripts*) and schedule to run daily or weekly.
+
+---
+
+## Integrations
+
+### Google Ads Scripting Ecosystem
+
+For media buyers who maintain automation by pasting JavaScript snippets into Google Ads, TubeSentry outputs a self-contained script with a built-in `DRY_RUN` preview mode:
+
+```bash
+tubesentry export script --report where_ads_showed.csv --out cleanup.js --list-name "TubeSentry Waste Shield"
+```
+
+* **Shared List Mode (Default):** Applies exclusions account-wide across Video, Performance Max, and Demand Gen campaigns without hitting individual campaign limits.
+* **Campaigns Mode:** Targets specific campaigns matching a name filter via `--mode CAMPAIGNS`.
+* **Safe Preview:** Defaults to `DRY_RUN = true` so media buyers can review logs before applying live exclusions.
+
+### BigQuery Data Transfer Service (DTS) & dbt
+
+For analytics and data engineering teams querying raw Google Ads Data Transfer Service tables (`p_Placement_*`), TubeSentry generates an optimized BigQuery Standard SQL query:
+
+```bash
+# Standard BigQuery SQL query
+tubesentry export bigquery --out tubesentry_audit.sql --dataset google_ads_export
+
+# dbt model format (with partitioning and clustering)
+tubesentry export bigquery --out models/tubesentry_audit.sql --dbt
+```
+
+Evaluates heuristics (Made-for-Kids, passive audio, underage gaming, foreign language scripts) directly in BigQuery without moving data out of your data warehouse.
+
 ---
 
 ## Python API

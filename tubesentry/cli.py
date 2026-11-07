@@ -114,6 +114,12 @@ def audit(
         "--ad-text",
         help="Ad copy, transcript, or campaign brief to profile ICP intent.",
     ),
+    export_script: Path | None = typer.Option(
+        None,
+        "--export-script",
+        "-s",
+        help="Path to export a copy-paste Google Ads JavaScript automation script (e.g. cleanup.js).",
+    ),
 ) -> None:
     """Audits a Google Ads or DV360 YouTube placement report for wasted ad spend."""
     target_languages = [s.strip().lower() for s in lang.split(",") if s.strip()]
@@ -127,10 +133,18 @@ def audit(
             export_exclusions_csv=str(out_exclusions) if out_exclusions else None,
             export_65k_shield_csv=str(out_65k) if out_65k else None,
             export_html_deck=str(html) if html else None,
+            export_google_ads_script=str(export_script) if export_script else None,
             print_banner=True,
             ad_url=ad_url,
             ad_text=ad_text,
         )
+        if export_script:
+            console.print(
+                f"\n[bold green][OK] Exported Google Ads JavaScript automation to:[/bold green] {export_script}"
+            )
+            console.print(
+                "[dim]Copy and paste into Google Ads -> Tools & Settings -> Bulk Actions -> Scripts.[/dim]"
+            )
     except Exception as e:
         err_console.print(f"[bold red]Audit error:[/bold red] {e}")
         raise typer.Exit(code=1) from e
@@ -223,6 +237,126 @@ def skill_path() -> None:
     from tubesentry.skills import get_bundled_skill_path
 
     console.print(str(get_bundled_skill_path()))
+
+
+export_app = typer.Typer(
+    name="export",
+    help="Export placement exclusions as Google Ads Scripts or BigQuery SQL.",
+    no_args_is_help=True,
+)
+app.add_typer(export_app, name="export")
+
+
+@export_app.command(name="script")
+def export_script_cmd(
+    report_csv: Path = typer.Option(
+        ...,
+        "--report",
+        "-r",
+        help="Path to Google Ads placement CSV report.",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    out_file: Path = typer.Option(
+        Path("cleanup_placements.js"),
+        "--out",
+        "-o",
+        help="Destination path for the Google Ads JavaScript file.",
+    ),
+    dry_run: bool = typer.Option(
+        True,
+        "--dry-run/--live",
+        help="Whether the generated script defaults to dry-run preview mode.",
+    ),
+    mode: str = typer.Option(
+        "SHARED_LIST",
+        "--mode",
+        "-m",
+        help="Exclusion mode: 'SHARED_LIST' (account-wide) or 'CAMPAIGNS'.",
+    ),
+    shared_list_name: str = typer.Option(
+        "TubeSentry Waste Shield",
+        "--list-name",
+        help="Name of the account-level Excluded Placement List.",
+    ),
+) -> None:
+    """Generates a self-contained Google Ads JavaScript automation script from a placement report."""
+    from tubesentry.integrations import generate_google_ads_script
+
+    report = tubesentry.audit_placements(report=report_csv, print_banner=False)
+    channel_ids = [
+        r.channel_id
+        for r in report.top_offenders
+        if r.channel_id and not r.channel_id.startswith("UC••••")
+    ]
+    script_js = generate_google_ads_script(
+        channel_ids_or_urls=channel_ids,
+        dry_run=dry_run,
+        mode=mode,
+        shared_list_name=shared_list_name,
+    )
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(script_js, encoding="utf-8")
+    console.print(f"[bold green][OK] Google Ads Script exported to:[/bold green] {out_file}")
+    console.print(
+        f"[dim]Generated {len(channel_ids)} placement exclusions. Paste into Google Ads -> Tools -> Scripts.[/dim]"
+    )
+
+
+@export_app.command(name="bigquery")
+def export_bigquery_cmd(
+    out_file: Path = typer.Option(
+        Path("tubesentry_bigquery.sql"),
+        "--out",
+        "-o",
+        help="Destination path for the BigQuery SQL query file.",
+    ),
+    dataset: str = typer.Option(
+        "google_ads_export",
+        "--dataset",
+        "-d",
+        help="BigQuery dataset name containing Google Ads DTS tables.",
+    ),
+    customer_id: str = typer.Option(
+        "",
+        "--customer-id",
+        "-c",
+        help="Optional Google Ads customer ID suffix (e.g. 1234567890).",
+    ),
+    lookback_days: int = typer.Option(
+        30,
+        "--days",
+        help="Lookback period in days.",
+    ),
+    target_cpa: float = typer.Option(
+        40.0,
+        "--cpa",
+        help="Target CPA threshold for performance sinkholes.",
+    ),
+    as_dbt: bool = typer.Option(
+        False,
+        "--dbt",
+        help="Format output as a dbt model with Jinja configuration.",
+    ),
+) -> None:
+    """Exports a BigQuery Data Transfer Service (DTS) SQL model to audit placements in your data warehouse."""
+    from tubesentry.integrations import generate_bigquery_dts_sql
+
+    sql = generate_bigquery_dts_sql(
+        dataset=dataset,
+        customer_id=customer_id,
+        lookback_days=lookback_days,
+        target_cpa=target_cpa,
+        as_dbt=as_dbt,
+    )
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(sql, encoding="utf-8")
+    console.print(f"[bold green][OK] BigQuery SQL model exported to:[/bold green] {out_file}")
+    console.print(
+        "[dim]Plug this query into BigQuery Studio, Scheduled Queries, or your dbt project.[/dim]"
+    )
 
 
 if __name__ == "__main__":

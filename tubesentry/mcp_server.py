@@ -207,6 +207,52 @@ def get_audit_skill_guide() -> str:
     return get_bundled_skill_text()
 
 
+@mcp.tool()
+def export_google_ads_script(
+    channel_ids: list[str],
+    dry_run: bool = True,
+    shared_list_name: str = "TubeSentry Waste Shield",
+    mode: str = "SHARED_LIST",
+) -> dict[str, Any]:
+    """Generates a self-contained, copy-paste Google Ads JavaScript automation snippet
+    to exclude identified waste channels at the account or campaign level.
+    """
+    from tubesentry.integrations import generate_google_ads_script
+
+    script_js = generate_google_ads_script(
+        channel_ids_or_urls=channel_ids,
+        dry_run=dry_run,
+        shared_list_name=shared_list_name,
+        mode=mode,
+    )
+    return {
+        "status": "success",
+        "channel_count": len(channel_ids),
+        "javascript_code": script_js,
+        "instructions": "Copy this code into Google Ads -> Tools and Settings -> Bulk Actions -> Scripts.",
+    }
+
+
+@mcp.tool()
+def export_bigquery_dts_sql(
+    dataset: str = "google_ads_export",
+    customer_id: str = "",
+    target_cpa: float = 40.0,
+    as_dbt: bool = False,
+) -> str:
+    """Generates an optimized BigQuery SQL query to audit placements directly from
+    Google Ads Data Transfer Service (DTS) tables (p_Placement_*).
+    """
+    from tubesentry.integrations import generate_bigquery_dts_sql
+
+    return generate_bigquery_dts_sql(
+        dataset=dataset,
+        customer_id=customer_id,
+        target_cpa=target_cpa,
+        as_dbt=as_dbt,
+    )
+
+
 def main() -> None:
     """CLI entrypoint for running the MCP server."""
     mcp.run()

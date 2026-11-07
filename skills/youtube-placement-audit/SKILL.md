@@ -44,7 +44,9 @@ Pro requires a Polar license key or test key:
 
 | Task | Command |
 | :--- | :--- |
-| **Run Placement Audit** | `tubesentry audit <report.csv> [--cpa 15.0] [--html report.html] [--ad-url <url>] [--ad-text <text>]` |
+| **Run Placement Audit** | `tubesentry audit <report.csv> [--cpa 15.0] [--export-script cleanup.js] [--html report.html] [--ad-url <url>]` |
+| **Export Google Ads Script** | `tubesentry export script --report <report.csv> --out cleanup.js [--dry-run/--live]` |
+| **Export BigQuery SQL** | `tubesentry export bigquery --out audit.sql [--dataset <name>] [--dbt]` |
 | **Generate Demo Data** | `tubesentry demo --out-dir demo --rows 500` |
 | **Start FastMCP Server** | `tubesentry mcp` |
 | **Install Agent Skill** | `tubesentry skill install [--target-dir .agents/skills]` |
@@ -157,6 +159,27 @@ from tubesentry.io.ingestor import load_placement_report, sample_by_impressions
 
 df = load_placement_report("massive_placements_report.csv")
 sample_df = sample_by_impressions(df, n=500)
+```
+
+### Recipe 4: Generate Copy-Paste Google Ads Exclusion Script
+Output a complete `.js` file for Google Ads Scripts to automate account-level exclusions:
+```python
+from tubesentry import generate_google_ads_script
+
+channels = ["UCbCmjCuTUZos6Inko4u57UQ", "UCSJ4gkVC6NrvII8umztf0Ow"]
+script_js = generate_google_ads_script(
+    channel_ids_or_urls=channels,
+    dry_run=True,
+    shared_list_name="TubeSentry Waste Shield",
+)
+```
+
+### Recipe 5: BigQuery DTS SQL Macro for Enterprise Warehouses
+Generate an audit query to run directly on Google Ads BigQuery Data Transfer Service tables:
+```python
+from tubesentry import generate_bigquery_dts_sql
+
+sql = generate_bigquery_dts_sql(dataset="google_ads_export", lookback_days=30, as_dbt=True)
 ```
 
 ---

@@ -38,6 +38,13 @@ export default defineConfig({
         ]
       },
       {
+        text: 'Integrations',
+        items: [
+          { text: 'Google Ads Scripts (.js)', link: '/guide/google-ads-scripts' },
+          { text: 'BigQuery DTS & dbt (SQL)', link: '/guide/bigquery' }
+        ]
+      },
+      {
         text: 'Commercial Edition',
         items: [
           { text: 'TubeSentry Pro & 65k Shield', link: '/guide/pro' }

@@ -8,6 +8,7 @@ import pandas as pd
 
 from tubesentry.contracts.schemas import AuditSummaryReport
 from tubesentry.core.auditor import run_free_audit
+from tubesentry.integrations import generate_bigquery_dts_sql, generate_google_ads_script
 from tubesentry.io.ingestor import load_placement_report
 from tubesentry.pro import bridge
 from tubesentry.pro.bridge import dispatch_pro_audit, is_pro_available
@@ -26,6 +27,7 @@ def audit_placements(
     export_exclusions_csv: str | None = None,
     export_65k_shield_csv: str | None = None,
     export_html_deck: str | None = None,
+    export_google_ads_script: str | None = None,
     white_label_config: dict[str, Any] | None = None,
     print_banner: bool = True,
     ad_url: str | None = None,
@@ -47,7 +49,7 @@ def audit_placements(
 
     # If Pro is available and a license key is provided (or Pro exports requested)
     if is_pro_available() and bridge.tubesentry_pro is not None and effective_key:
-        return dispatch_pro_audit(
+        summary_report = dispatch_pro_audit(
             df=df,
             target_languages=langs,
             target_cpa=target_cpa,
@@ -61,10 +63,9 @@ def audit_placements(
             ad_text=ad_text,
             gemini_api_key=gemini_api_key,
         )
-
-    # If caller specifically requested Pro exports without Pro/license, route through dispatcher to surface upgrade error
-    if export_exclusions_csv or export_65k_shield_csv or export_html_deck or ad_url or ad_text:
-        return dispatch_pro_audit(
+    elif export_exclusions_csv or export_65k_shield_csv or export_html_deck or ad_url or ad_text:
+        # If caller specifically requested Pro exports without Pro/license, route through dispatcher to surface upgrade error
+        summary_report = dispatch_pro_audit(
             df=df,
             target_languages=langs,
             target_cpa=target_cpa,
@@ -78,19 +79,34 @@ def audit_placements(
             ad_text=ad_text,
             gemini_api_key=gemini_api_key,
         )
+    else:
+        summary_report = run_free_audit(
+            df=df,
+            target_languages=langs,
+            target_cpa=target_cpa,
+            print_banner=print_banner,
+        )
 
-    return run_free_audit(
-        df=df,
-        target_languages=langs,
-        target_cpa=target_cpa,
-        print_banner=print_banner,
-    )
+    if export_google_ads_script:
+        channels_to_exclude = [
+            r.channel_id
+            for r in summary_report.top_offenders
+            if r.channel_id and not r.channel_id.startswith("UC••••")
+        ]
+        script_code = generate_google_ads_script(channels_to_exclude)
+        out_path = Path(export_google_ads_script)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(script_code, encoding="utf-8")
+
+    return summary_report
 
 
 __all__ = [
     "AuditSummaryReport",
     "__version__",
     "audit_placements",
+    "generate_bigquery_dts_sql",
+    "generate_google_ads_script",
     "get_bundled_skill_path",
     "get_bundled_skill_text",
     "install_pro",
