@@ -8,6 +8,16 @@ The skill gives autonomous AI agents step-by-step decision rules, tool calling r
 
 ## Installing the Skill
 
+### 1. Via skills.sh / npx (Universal Agent Installer)
+
+Install directly to Claude Code, Cursor, Copilot, or Antigravity via the open `skills` ecosystem:
+
+```bash
+npx skills add flovv/tubesentry
+```
+
+### 2. Via TubeSentry CLI
+
 Run the CLI command in any workspace root:
 
 ```bash

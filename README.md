@@ -144,9 +144,17 @@ Add to `.cursor/mcp.json`:
 
 ## Agent Skill
 
-TubeSentry includes an installable skill (`youtube-placement-audit`) formatted with standard frontmatter for AI coding assistants and agent environments (Antigravity, Claude Code, Cursor, Codex).
+TubeSentry includes an installable skill (`youtube-placement-audit`) formatted with standard frontmatter for AI coding assistants and agent environments (Claude Code, Cursor, Antigravity, Codex).
 
-### Install Skill into Current Workspace
+### Install via skills.sh / npx
+
+Install directly to your agent configuration using the open skills standard:
+
+```bash
+npx skills add flovv/tubesentry
+```
+
+### Install via TubeSentry CLI
 
 ```bash
 tubesentry skill install
@@ -158,7 +166,7 @@ Or run without installation via `uvx`:
 uvx --from tubesentry tubesentry skill install
 ```
 
-This places `SKILL.md` into `.agents/skills/youtube-placement-audit/` (or `.claude/skills/`), providing autonomous agents with:
+This places `SKILL.md` into your workspace (`.agents/skills/` or `.claude/skills/`), providing autonomous agents with:
 * Operational recipes for analyzing Google Ads / DV360 placement reports
 * Waste category decision rules and CPA thresholds
 * FastMCP tool invocation patterns and creative targeting fit guides
