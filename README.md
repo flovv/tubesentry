@@ -1,119 +1,118 @@
-# TubeSentry 🛡️
+# TubeSentry
 
-**The Agentic-First YouTube & Performance Max Placement Waste Auditor, Creative Targeting Engine & FastMCP Server**
+Local-first placement auditor and Model Context Protocol (MCP) server for Google Ads and DV360.
 
 [![CI Tests](https://github.com/flovv/tubesentry/actions/workflows/ci_tests.yml/badge.svg)](https://github.com/flovv/tubesentry/actions/workflows/ci_tests.yml)
-[![Docs & GitHub Pages](https://github.com/flovv/tubesentry/actions/workflows/deploy_docs.yml/badge.svg)](https://flovv.github.io/tubesentry/)
+[![Documentation](https://github.com/flovv/tubesentry/actions/workflows/deploy_docs.yml/badge.svg)](https://flovv.github.io/tubesentry/)
 [![PyPI version](https://img.shields.io/pypi/v/tubesentry.svg)](https://pypi.org/project/tubesentry/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
-[![MCP Server](https://img.shields.io/badge/MCP-FastMCP-purple.svg)](https://modelcontextprotocol.io/)
+
+**Documentation:** [https://flovv.github.io/tubesentry/](https://flovv.github.io/tubesentry/)
 
 ---
 
-### [📖 Interactive Documentation & Live Guide](https://flovv.github.io/tubesentry/)
+## Description
+
+TubeSentry analyzes placement reports ("Where ads showed") from Google Ads (YouTube, Performance Max, Demand Gen) and Google Display & Video 360 (DV360). It categorizes placements against known risk patterns, quantifies wasted media spend, calculates an impression-weighted quality score, and generates exclusion lists for Google Ads Editor.
+
+Processing runs 100% locally. Client placement data, impressions, and budgets never leave your machine.
+
+**Tags:** `google-ads`, `youtube-ads`, `performance-max`, `dv360`, `adtech`, `ppc`, `mcp-server`, `placement-exclusions`, `marketing-analytics`
 
 ---
 
-## 💡 Why TubeSentry?
+## What TubeSentry Detects
 
-When running video campaigns on **Google Ads**, **Performance Max (PMax)**, **Demand Gen**, or **DV360**, algorithmic automated placement expansion routinely wastes **20% to 50%+** of advertising spend on low-intent, accidental, or non-human impressions:
+When running YouTube or Performance Max campaigns, broad placement algorithms frequently allocate budget to non-converting or unintended inventory:
 
-* 👶 **Made-for-Kids & Toddler Brainrot:** CoComelon, Baby Shark, nursery rhymes, and toddler sing-alongs streamed on parent iPads (severe bounce rates and COPPA / GDPR-K regulatory risk).
-* 🎧 **Passive Background Audio Streams:** 24/7 Lofi beats, sleep music, rain sounds, and meditation loops with zero active visual attention.
-* 🎮 **Underage Minor Gaming Drains:** Roblox, Minecraft, Brawl Stars, and Skibidi Toilet mobile livestreams tapped accidentally by young children.
-* 🌍 **Foreign Script Geo-Leakage:** Mismatched Cyrillic, Hindi, Arabic, Thai, or Asian broadcast TV channels consuming spend in local EU/US campaigns.
-* 🤖 **AI Slop & Content Farms:** Split-screen Subway Surfers + synthetic voiceover shorts and click arbitrage farms with anomalous CTR and zero conversions.
-* 🕳️ **Performance Sinkholes:** Placements burning $>3\times$ target CPA with 0 conversions.
-* 🎯 **Creative Intent vs. Delivery Reality Gap:** Even clean channels often deliver far outside your creative brief. TubeSentry includes a **Gemini Creative Profiler** to evaluate your ad video URL or brief, extract your Ideal Customer Profile (ICP), and contrast **Expectation vs. Delivery Reality**.
-
-TubeSentry is **100% local-first and privacy-preserving**: your placement CSV reports never leave your machine.
+* **Made for Kids (MFK):** Toddler songs and children's cartoons streamed on shared mobile devices, leading to accidental taps and COPPA compliance concerns.
+* **Passive Audio & Music:** 24/7 background lo-fi streams, ambient sleep tracks, and white-noise loops where visual engagement is minimal.
+* **Underage Gaming:** Channels dedicated to mobile sandbox titles (Roblox, Minecraft) that generate high view counts with negligible conversion value.
+* **Foreign Script Delivery:** Placements running on non-target language scripts (Cyrillic, Devanagari, Arabic, Thai) within domestic campaigns.
+* **Low-Quality Content Farms:** Automated short-form compilations designed for view arbitrage with high bounce rates.
+* **Performance Sinkholes:** Placements that exceed 3x target CPA without registering conversions.
+* **Creative Alignment Gap:** Optional analysis comparing your creative's intended target audience with the actual channels where impressions ran.
 
 ---
 
-## ⚡ Quickstart
-
-### Installation
+## Installation
 
 ```bash
 pip install tubesentry
 ```
 
-### 1. Test Drive with 25,000 Synthetic Placements
-
-Generate a realistic 25,000-row Google Ads placement report and run an instant audit diagnostic:
+Or run directly without installation using `uvx`:
 
 ```bash
-tubesentry demo --out-dir ./demo_youtube
-```
-
-### 2. Audit Your Google Ads / DV360 Placement Report
-
-Export your placement report from Google Ads (*Reports $\rightarrow$ Predefined reports $\rightarrow$ Other $\rightarrow$ Where ads showed $\rightarrow$ Download `.csv`*) or DV360 and run:
-
-```bash
-tubesentry audit where_ads_showed.csv --lang de,en --cpa 45.0
-```
-
-### 3. Profile Creative Targeting Fit (Gemini Multimodal)
-
-Pass your YouTube Ad URL or creative brief to compare your campaign intent against algorithmic delivery:
-
-```bash
-tubesentry audit where_ads_showed.csv \
-  --ad-url "https://youtube.com/watch?v=your_ad_video" \
-  --ad-text "B2B enterprise cloud security platform for CISOs and DevSecOps teams" \
-  --html audit_deck.html
+uvx --from tubesentry tubesentry --help
 ```
 
 ---
 
-## 🐍 Python SDK API
+## Quickstart
 
-TubeSentry seamlessly auto-detects multi-language CSV exports (**English, German, Spanish, French, Italian, Dutch**):
+### 1. Run a Synthetic Demo Audit
+
+Generate a 25,000-row synthetic placement report and review the audit output:
+
+```bash
+tubesentry demo --out-dir ./demo_output
+```
+
+### 2. Audit an Exported Placement CSV
+
+Export your placement report from Google Ads (*Reports > Predefined reports > Other > Where ads showed > Download CSV*) or DV360:
+
+```bash
+tubesentry audit where_ads_showed.csv --lang en,de --cpa 45.0
+```
+
+### 3. Compare Creative Intent to Actual Delivery
+
+Pass your YouTube ad URL or creative brief text to compare target audience expectations against delivery reality:
+
+```bash
+tubesentry audit where_ads_showed.csv \
+  --ad-url "https://youtube.com/watch?v=your_ad_id" \
+  --ad-text "B2B infrastructure platform for DevOps and cloud architects"
+```
+
+---
+
+## Python API
+
+TubeSentry supports localized Google Ads CSV exports (English, German, Spanish, French, Italian, Dutch):
 
 ```python
 import tubesentry as ts
 
-# Run instant placement audit
 report = ts.audit_placements(
     report="where_ads_showed.csv",
-    target_languages=["de", "en"],
+    target_languages=["en", "de"],
     target_cpa=40.0,
-    ad_url="https://youtube.com/watch?v=demo_video",
-    ad_text="Enterprise Kubernetes automation for DevOps and SRE teams.",
+    ad_url="https://youtube.com/watch?v=your_ad_id",
+    ad_text="B2B cloud infrastructure monitoring for SRE teams.",
 )
 
-print(f"Audited Spend:   €{report.total_spend:,.2f}")
-print(f"Wasted Spend:    €{report.total_wasted_spend:,.2f} ({report.wasted_spend_percentage:.1f}%)")
-print(f"Quality Score:   {report.weighted_quality_score:.1f} / 10.0")
+print(f"Audited Spend:    EUR {report.total_spend:,.2f}")
+print(f"Wasted Spend:     EUR {report.total_wasted_spend:,.2f} ({report.wasted_spend_percentage:.1f}%)")
+print(f"Quality Score:    {report.weighted_quality_score:.1f} / 10.0")
 
 if report.creative_alignment:
-    print(f"Targeting Fit:   {report.creative_alignment.overall_alignment_score:.1f} / 10.0")
-    print(f"Off-Target Bleed: €{report.creative_alignment.off_target_spend:,.2f}")
+    print(f"Alignment Score:  {report.creative_alignment.overall_alignment_score:.1f} / 10.0")
+    print(f"Off-Target Spend: EUR {report.creative_alignment.off_target_spend:,.2f}")
 ```
 
 ---
 
-## 🤖 Claude Desktop, Claude Code & Cursor MCP Server
+## MCP Server (Claude Desktop, Claude Code, Cursor)
 
-TubeSentry includes a native **Model Context Protocol (FastMCP)** server. AI coding assistants and chat environments can audit placements and inspect channels directly in natural language.
+TubeSentry includes a native Model Context Protocol (FastMCP) server, allowing AI coding assistants and agents to inspect placements and channels directly.
 
 ### Claude Desktop Configuration
 
-Add to your `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "tubesentry": {
-      "command": "tubesentry-mcp"
-    }
-  }
-}
-```
-
-Or run without installation via `uvx`:
+Add to `claude_desktop_config.json`:
 
 ```json
 {
@@ -126,7 +125,7 @@ Or run without installation via `uvx`:
 }
 ```
 
-### Cursor IDE Configuration
+### Cursor Configuration
 
 Add to `.cursor/mcp.json`:
 
@@ -134,41 +133,36 @@ Add to `.cursor/mcp.json`:
 {
   "mcpServers": {
     "tubesentry": {
-      "command": "tubesentry-mcp"
+      "command": "uvx",
+      "args": ["--from", "tubesentry", "tubesentry-mcp"]
     }
   }
 }
 ```
 
-### Example Natural Language Prompts
-* *"Audit my Google Ads placement report at `~/Downloads/pmax_october.csv` for toddler brainrot and passive music streams."*
-* *"Profile this YouTube video ad URL with Gemini: `https://youtube.com/watch?v=...` and tell me what contextual topics and negative exclusions to set in Google Ads."*
-* *"Inspect these 5 YouTube channels for COPPA and background audio risk: `UCbCmjCuTUZos6Inko4u57UQ`, `UCSJ4gkVC6NrvII8umztf0Ow`."*
+---
+
+## Editions
+
+| Feature | Open-Core (Free) | Pro (Licensed) |
+| :--- | :--- | :--- |
+| Waste category breakdown and percentage | Yes | Yes |
+| Impression-weighted quality score (1-10) | Yes | Yes |
+| Worst-offender channel reporting | Top 25 unmasked | All unmasked |
+| Bundled waste seed database | 2,500 channels | 250,000-channel registry |
+| Channel metadata resolution | Local heuristics | 50-ID batch YouTube API v3 enricher |
+| Google Ads 65,000 exclusion shield CSV | No | Yes (`google_ads_65k_full_shield.csv`) |
+| DV360 SDF exclusion chunks | No | Yes (10,000-row SDF blocks) |
+| Creative targeting fit engine | Core matching | Multimodal creative profiler |
+| Client HTML presentation deck | No | Yes (single-file HTML report) |
 
 ---
 
-## 📊 Open-Core vs. TubeSentry Pro
+## Pro Activation
 
-| Feature | Open-Core `tubesentry` (Free) | `tubesentry_pro` (Licensed) |
-| :--- | :---: | :---: |
-| **Exact Category Spend & % Waste Breakdown** | ✅ Full Visibility | ✅ Full Visibility |
-| **Impression-Weighted Quality Score (1–10)** | ✅ Included | ✅ Included |
-| **Top 25 Worst Offender Channels** | ✅ Unmasked | ✅ Unmasked |
-| **Tail Offender Channels ($c_{26} \dots c_M$)** | 🔒 Masked (`UC••••••••••••`) | ✅ 100% Unmasked |
-| **Bundled Waste Seed Dictionary** | 2,500 Notorious Channels | **250,000 Pre-Classified Registry** |
-| **Long-Tail Unknown Channel Enrichment** | Regex Heuristics | **Async 50-ID Batch YouTube API v3 Resolver** |
-| **Google Ads 65,000 Exclusion Shield CSV** | ❌ | ✅ 1-Click Ready (`google_ads_65k_full_shield.csv`) |
-| **DV360 SDF Exclusion Chunks** | ❌ | ✅ 10,000-Row SDF Blocks |
-| **Gemini Creative Targeting Fit Engine** | ✅ Core Matching | ✅ Multimodal Deep Profiler |
-| **CFO / Client Brand-Safety HTML Audit Deck** | ❌ | ✅ White-Label Interactive Chart.js Deck |
+Single audit passes and agency licenses are available via [Polar](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX).
 
----
-
-## 🔑 Activating TubeSentry Pro
-
-Obtain an instant Single Audit Pass (€199) or Agency Unlimited Key via [Polar Checkout](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX):
-
-[![Buy TubeSentry Pro on Polar](https://img.shields.io/badge/Polar.sh-Buy%20TubeSentry%20Pro-0062FF?style=for-the-badge&logo=polar&logoColor=white)](https://buy.polar.sh/polar_cl_lRuifr3uJS0LR0k6frhg3JEKBRZNQq75hv7cS2am9cX)
+Activate via CLI:
 
 ```bash
 tubesentry auth --key TS_PRO_YOUR_POLAR_KEY
@@ -178,19 +172,20 @@ Or via Python:
 
 ```python
 import tubesentry as ts
+
 ts.install_pro(api_key="TS_PRO_...")
 ```
 
 ---
 
-## 🛡️ Privacy & Security Guarantee
+## Security & Privacy
 
-* **Local-First:** All CSV ingestion, regex scoring, and database lookups run 100% locally on your machine.
-* **Zero Cloud Ingestion:** Your clients' placement data, budgets, and impressions are never uploaded to any third-party server.
-* **Serverless Architecture:** 0€ infrastructure overhead.
+* **Local execution:** All CSV parsing, heuristic scoring, and database lookups run locally.
+* **No cloud ingestion:** Client spend numbers, impressions, and account identifiers are never transmitted to external servers.
+* **No telemetry:** The core package does not collect analytics or track usage.
 
 ---
 
-## 📜 License
+## License
 
 MIT License. See [LICENSE](LICENSE) for details.

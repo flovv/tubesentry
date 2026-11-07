@@ -2,14 +2,13 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: "TubeSentry",
-  description: "Agentic-First YouTube & Performance Max Placement Waste Auditor & MCP Server",
+  description: "Local-First YouTube & Performance Max Placement Waste Auditor & MCP Server",
   base: "/tubesentry/",
   head: [
     ['link', { rel: 'icon', href: '/tubesentry/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#0284c7' }]
   ],
   themeConfig: {
-    logo: '🛡️',
     siteTitle: 'TubeSentry',
     nav: [
       { text: 'Guide', link: '/guide/quickstart' },

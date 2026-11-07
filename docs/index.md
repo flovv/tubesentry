@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "TubeSentry"
   text: "Eliminate Wasted YouTube & PMax Ad Spend"
-  tagline: "Local-first placement auditor, Gemini creative targeting profiler, and FastMCP server for Google Ads & DV360."
+  tagline: "Local-first placement auditor and FastMCP server for Google Ads & DV360."
   actions:
     - theme: brand
       text: Get Started
@@ -20,24 +20,16 @@ hero:
       link: https://github.com/flovv/tubesentry
 
 features:
-  - icon: 👶
-    title: Made-for-Kids & Toddler Detection
-    details: Flags toddler brainrot, nursery rhymes, and accidental iPad taps to protect budget and prevent COPPA compliance exposure.
-  - icon: 🎯
-    title: Gemini Creative Profiler
-    details: Audits YouTube ad URLs against actual delivery. Contrasts Ideal Customer Profile (ICP) intent with algorithmic reality.
-  - icon: 🤖
-    title: FastMCP Server Built-in
-    details: Native Model Context Protocol support for Claude Desktop, Claude Code, and Cursor. Audit placements in natural language.
-  - icon: 🎧
-    title: Passive Audio & Gaming Filtering
-    details: Identifies 24/7 lofi background streams, sleep audio, and underage Roblox/Minecraft gameplay drains.
-  - icon: 🛡️
-    title: 65,000 Exclusion Quantizer
-    details: Exports ready-to-import Google Ads Editor CSV exclusion shields capped at Google's exact 65,000 placement limit.
-  - icon: 🔒
-    title: 100% Local-First & Private
-    details: Client budgets, impressions, and placement CSVs never leave your local environment. Zero cloud data leaks.
+  - title: Made-for-Kids & COPPA Inventory
+    details: Flags toddler rhymes, animation channels, and high-frequency tap inventory to protect media budget and ensure compliance.
+  - title: Creative Targeting Evaluation
+    details: Compares YouTube ad creative messaging with actual placement delivery to quantify audience misalignment and bleed.
+  - title: FastMCP Server Integration
+    details: Native Model Context Protocol support for Claude Desktop, Claude Code, and Cursor to audit placements in your workflow.
+  - title: Passive Audio & Sandbox Gaming
+    details: Identifies 24/7 background ambient streams, lo-fi radio, and mobile gaming channels with low conversion probability.
+  - title: 65,000 Exclusion Quantizer
+    details: Exports Google Ads Editor CSV exclusion lists sized to Google's placement limit for one-click account protection.
+  - title: 100% Local Processing
+    details: Client budgets, impression totals, and placement CSVs remain on your local machine with zero external data transmission.
 ---
-
-<!-- TubeSentry Documentation -->
