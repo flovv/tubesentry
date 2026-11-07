@@ -176,5 +176,54 @@ def auth(
         raise typer.Exit(code=1) from e
 
 
+skill_app = typer.Typer(
+    name="skill",
+    help="Manage and install the TubeSentry AI agent skill.",
+    no_args_is_help=True,
+)
+app.add_typer(skill_app, name="skill")
+
+
+@skill_app.command(name="install")
+def skill_install(
+    target_dir: Path | None = typer.Option(
+        None,
+        "--target-dir",
+        "-t",
+        help="Custom destination directory (defaults to ./.agents/skills or ./.claude/skills).",
+    ),
+) -> None:
+    """Installs the TubeSentry Agent Skill (SKILL.md) into the workspace for AI agents."""
+    from tubesentry.skills import install_skill
+
+    try:
+        dest_file = install_skill(target_dir=target_dir)
+        console.print(
+            f"[bold green][OK] TubeSentry Agent Skill installed to:[/bold green] {dest_file}"
+        )
+        console.print(
+            "[dim]AI agents (Antigravity, Claude Code, Cursor, Codex) in this workspace can now use `youtube-placement-audit`.[/dim]"
+        )
+    except Exception as e:
+        err_console.print(f"[bold red]Failed to install skill:[/bold red] {e}")
+        raise typer.Exit(code=1) from e
+
+
+@skill_app.command(name="show")
+def skill_show() -> None:
+    """Outputs the markdown instructions of the bundled TubeSentry Agent Skill."""
+    from tubesentry.skills import get_bundled_skill_text
+
+    console.print(get_bundled_skill_text())
+
+
+@skill_app.command(name="path")
+def skill_path() -> None:
+    """Prints the local filesystem path of the bundled SKILL.md file."""
+    from tubesentry.skills import get_bundled_skill_path
+
+    console.print(str(get_bundled_skill_path()))
+
+
 if __name__ == "__main__":
     app()

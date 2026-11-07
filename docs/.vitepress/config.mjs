@@ -30,8 +30,9 @@ export default defineConfig({
       {
         text: 'Core Features',
         items: [
-          { text: 'Creative Targeting Fit (Gemini)', link: '/guide/creative-profiler' },
-          { text: 'Claude & Cursor MCP Server', link: '/guide/mcp-server' },
+          { text: 'Creative Targeting Fit', link: '/guide/creative-profiler' },
+          { text: 'FastMCP Server', link: '/guide/mcp-server' },
+          { text: 'Agent Skill', link: '/guide/agent-skill' },
           { text: 'CLI Reference', link: '/guide/cli' },
           { text: 'Python SDK', link: '/guide/python-sdk' }
         ]

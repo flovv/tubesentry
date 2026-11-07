@@ -197,6 +197,16 @@ def activate_tubesentry_pro(api_key: str) -> dict[str, Any]:
         return {"status": "error", "message": str(e)}
 
 
+@mcp.tool()
+def get_audit_skill_guide() -> str:
+    """Returns the comprehensive TubeSentry Agent Skill instructions, rules of thumb,
+    data contracts, and decision recipes for auditing YouTube and PMax placement reports.
+    """
+    from tubesentry.skills import get_bundled_skill_text
+
+    return get_bundled_skill_text()
+
+
 def main() -> None:
     """CLI entrypoint for running the MCP server."""
     mcp.run()

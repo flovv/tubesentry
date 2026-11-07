@@ -18,6 +18,7 @@ def test_cli_help() -> None:
     assert "audit" in result.output
     assert "demo" in result.output
     assert "auth" in result.output
+    assert "skill" in result.output
 
 
 def test_cli_demo(tmp_path: Path) -> None:

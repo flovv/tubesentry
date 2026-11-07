@@ -12,6 +12,7 @@ from tubesentry.io.ingestor import load_placement_report
 from tubesentry.pro import bridge
 from tubesentry.pro.bridge import dispatch_pro_audit, is_pro_available
 from tubesentry.pro.installer import install_pro
+from tubesentry.skills import get_bundled_skill_path, get_bundled_skill_text, install_skill
 
 __version__ = "0.1.0"
 
@@ -90,7 +91,10 @@ __all__ = [
     "AuditSummaryReport",
     "__version__",
     "audit_placements",
+    "get_bundled_skill_path",
+    "get_bundled_skill_text",
     "install_pro",
+    "install_skill",
     "is_pro_available",
     "load_placement_report",
 ]
